@@ -1,4 +1,4 @@
-library classroom_push_notification;
+library simple_push_notification;
 
 import 'package:simple_push_notification/notification_manager/notification_manager.dart';
 import 'package:simple_push_notification/notification_manager/notification_manager_impl.dart';
@@ -10,14 +10,14 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:simple_push_notification/push_notification/push_notification_service.dart';
 import 'package:simple_push_notification/push_notification/push_notification_service_impl.dart';
 
-class ClassroomPushNotification {
+class SimplePushNotification {
   late final InternalPushNotification pushNotification;
   late final FirebaseApp firebaseApp;
   late final NotificationNavigation nav;
   late final NotificationManager _manager;
-  static late ClassroomPushNotification _instance;
+  static late SimplePushNotification _instance;
 
-  ClassroomPushNotification._internal({
+  SimplePushNotification._internal({
     required this.firebaseApp,
     required this.nav,
     required NotificationPayload Function(Map<String, dynamic>)
@@ -36,13 +36,13 @@ class ClassroomPushNotification {
     );
   }
 
-  static ClassroomPushNotification initialize(
+  static SimplePushNotification initialize(
     FirebaseApp firebaseApp,
     NotificationNavigation nav,
     NotificationPayload Function(Map<String, dynamic>) getNotificationPayload, {
     required NotificationConfig config,
   }) {
-    _instance = ClassroomPushNotification._internal(
+    _instance = SimplePushNotification._internal(
       firebaseApp: firebaseApp,
       nav: nav,
       getNotificationPayload: getNotificationPayload,
@@ -51,7 +51,7 @@ class ClassroomPushNotification {
     return _instance;
   }
 
-  static ClassroomPushNotification get instance => _instance;
+  static SimplePushNotification get instance => _instance;
   NotificationManager get notificationManager => _manager;
 
   Future<void> activate({
