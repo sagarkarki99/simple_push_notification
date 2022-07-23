@@ -15,7 +15,6 @@ late Function(String) _onNotificationClick;
 class NotificationManagerImpl implements NotificationManager {
   final FlutterLocalNotificationsPlugin notificationClient;
   final NotificationNavigation notificationNavigation;
-  VoidCallback? notificationRead;
   NotificationPayload Function(Map<String, dynamic>) getNotificationPayload;
   final NotificationConfig config;
 
@@ -110,7 +109,6 @@ class NotificationManagerImpl implements NotificationManager {
   }
 
   void _handleNotificationNavigation(Map<String, dynamic> message) {
-    notificationRead?.call();
     final payload = _getNotificationPayload(message);
     notificationNavigation.navigateTo(payload);
   }
@@ -140,7 +138,5 @@ class NotificationManagerImpl implements NotificationManager {
   }
 
   @override
-  void onNotificationRead(VoidCallback onNotificationRead) {
-    notificationRead = onNotificationRead;
-  }
+  void onNotificationRead(VoidCallback onNotificationRead) {}
 }
