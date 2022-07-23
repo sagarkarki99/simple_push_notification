@@ -1,5 +1,5 @@
 name: simple_push_notification
-description: A new Flutter package project.
+description: A package for handling push notification service in a simple way.
 version: 0.0.1
 
 environment:
