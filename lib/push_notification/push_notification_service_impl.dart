@@ -8,7 +8,7 @@ class InternalPushNotificationImpl implements InternalPushNotification {
   final NotificationManager notificationManager;
   final String? previousToken;
 
-  late Function(String) _onReadNotification;
+  late Function(Map<String, dynamic>) _onReadNotification;
   final List<Function(Map<String, dynamic>)> _listeners = [];
 
   InternalPushNotificationImpl(
@@ -17,7 +17,7 @@ class InternalPushNotificationImpl implements InternalPushNotification {
   );
   @override
   Future<void> activate({
-    required void Function(String) onRead,
+    required void Function(Map<String, dynamic>) onRead,
     required void Function(String?) onActivated,
   }) async {
     _onReadNotification = onRead;
@@ -32,37 +32,25 @@ class InternalPushNotificationImpl implements InternalPushNotification {
 
     if (notificationStackMessage != null) {
       Future.delayed(const Duration(seconds: 1), () {
-        _navigateToLocalNavigation(notificationStackMessage.data);
+        _navigateToLocalNavigation(_getSendableData(notificationStackMessage));
       });
     }
 
     //while app is in foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      final data = {
-        ...message.data,
-        'body': message.data['message'] ?? message.notification?.body,
-        'secondaryTitle': message.data['title'] ?? message.notification?.title,
-        'date': message.sentTime?.millisecondsSinceEpoch,
-        'time': message.sentTime?.millisecondsSinceEpoch,
-      };
+      final data = _getSendableData(message);
       _notifyListeners(data);
       notificationManager.displayPopup(
         message.notification?.title ?? '',
         message.notification?.body ?? '',
         data,
-        (String id) => markNotificationAsRead(id),
+        (Map<String, dynamic> data) => markNotificationAsRead(data),
       );
     });
 
     //while app is in background state
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      final data = {
-        ...message.data,
-        'body': message.data['message'] ?? message.notification?.body,
-        'secondaryTitle': message.data['title'] ?? message.notification?.title,
-        'date': message.sentTime?.millisecondsSinceEpoch,
-        'time': message.sentTime?.millisecondsSinceEpoch,
-      };
+      final data = _getSendableData(message);
       _navigateToLocalNavigation(data);
     });
   }
@@ -91,17 +79,27 @@ class InternalPushNotificationImpl implements InternalPushNotification {
   }
 
   void _navigateToLocalNavigation(Map<String, dynamic> data) {
-    markNotificationAsRead(data['messageId'] as String);
+    _onReadNotification(data);
     notificationManager.navigate(data);
   }
 
-  void markNotificationAsRead(String messageId) {
-    _onReadNotification(messageId);
+  void markNotificationAsRead(Map<String, dynamic> data) {
+    _onReadNotification(data);
   }
 
   void _notifyListeners(Map<String, dynamic> data) {
     for (var listener in _listeners) {
       listener(data);
     }
+  }
+
+  Map<String, dynamic> _getSendableData(RemoteMessage message) {
+    return {
+      ...message.data,
+      'body': message.data['message'] ?? message.notification?.body,
+      'secondaryTitle': message.data['title'] ?? message.notification?.title,
+      'date': message.sentTime?.millisecondsSinceEpoch,
+      'time': message.sentTime?.millisecondsSinceEpoch,
+    };
   }
 }

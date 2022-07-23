@@ -6,7 +6,7 @@ abstract class NotificationManager {
       String title,
       String body,
       Map<String, dynamic> message,
-      Function(String payload) onReadNotification);
+      Function(Map<String, dynamic>) onReadNotification);
 
   /// navigates user according to the payload in [message]
   void navigate(Map<String, dynamic> message);
