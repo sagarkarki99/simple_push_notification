@@ -36,10 +36,29 @@ class SimplePushNotification {
     );
   }
 
+  /// Initialize push notification inorder to `activate` `deactivate` or `listen` to push notification service.
   static SimplePushNotification initialize(
     FirebaseApp firebaseApp,
+
+    /// Inorder to handle notification navigation, you need to implement [NotificationNavigation] interface and pass it here.
+    ///
+    /// ``` dart
+    /// class NavigationHandler implements NotificationNavigation{
+    /// @override
+    /// void navigateTo(NotificationPayload payload) {
+    ///   ///handle navigation to which ever router you have.
+    ///   payload.trigger(context); /// pass the context of `Navigator` in here.
+    ///  }
+    ///}
+    ///  ```
     NotificationNavigation nav,
+
+    /// Create a class implementing [NotificationPayload] and return it from this callback.
+    /// This will navigate to routes specified in Payload
+    /// `Map<String,dynamic>` is a data coming from push notification.
     NotificationPayload Function(Map<String, dynamic>) getNotificationPayload, {
+
+    /// Config includes the notification channel id, name and description, specifically for android.
     required NotificationConfig config,
   }) {
     _instance = SimplePushNotification._internal(
@@ -54,6 +73,11 @@ class SimplePushNotification {
   static SimplePushNotification get instance => _instance;
   NotificationManager get notificationManager => _manager;
 
+  /// This method activates the service and starts recieving push notification from firebase.
+  ///
+  ///
+  /// `onRead` is called when a popup notification is tapped
+  /// `onActivated` is called when push notification is activated successfully.
   Future<void> activate({
     required void Function(String) onRead,
     required void Function(String?) onActivated,
@@ -64,6 +88,11 @@ class SimplePushNotification {
     );
   }
 
+  /// This method deactivates and stops recieving push notifications.
+  ///
+  ///
+  /// `onRead` is called when a popup notification is tapped
+  /// `onActivated` is called when push notification is activated successfully.
   Future<void> deactivate({
     required void Function(String?) onDeactivated,
   }) async {
@@ -72,7 +101,9 @@ class SimplePushNotification {
     );
   }
 
-  void listen(Function(Map<String, dynamic>) callback) {
-    pushNotification.listen(callback);
+  /// This methods listens to push notifications.
+  /// When any notifications arrives, `notify` callback is called.
+  void listen(Function(Map<String, dynamic>) notify) {
+    pushNotification.listen(notify);
   }
 }
