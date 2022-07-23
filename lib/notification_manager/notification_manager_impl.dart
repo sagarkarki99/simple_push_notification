@@ -10,7 +10,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'notification_manager.dart';
 
 Map<String, dynamic> _foregroundMessage = {};
-late Function(String) _onNotificationClick;
+late Function(Map<String, dynamic>) _onNotificationClick;
 
 class NotificationManagerImpl implements NotificationManager {
   final FlutterLocalNotificationsPlugin notificationClient;
@@ -33,7 +33,7 @@ class NotificationManagerImpl implements NotificationManager {
       String title,
       String body,
       Map<String, dynamic> message,
-      Function(String payload) onReadNotification) async {
+      Function(Map<String, dynamic> payload) onReadNotification) async {
     _onNotificationClick = onReadNotification;
     _foregroundMessage = message;
     await _displayNotification(title, body, message);
@@ -61,7 +61,8 @@ class NotificationManagerImpl implements NotificationManager {
 
     await notificationClient.initialize(
       initializationSettings,
-      onSelectNotification: (payload) async => _openNotification(payload ?? ''),
+      onSelectNotification: (payload) async =>
+          _openNotification(_foregroundMessage),
     );
   }
 
@@ -85,8 +86,8 @@ class NotificationManagerImpl implements NotificationManager {
     }
   }
 
-  void _openNotification(String id) {
-    _onNotificationClick(id);
+  void _openNotification(Map<String, dynamic> data) {
+    _onNotificationClick(data);
     _handleNotificationNavigation(_foregroundMessage);
   }
 

@@ -1,7 +1,7 @@
 abstract class InternalPushNotification {
   ///activate remote push notification service when user is authenticated
   Future<void> activate({
-    required void Function(String) onRead,
+    required void Function(Map<String, dynamic>) onRead,
     required void Function(String?) onActivated,
   });
 

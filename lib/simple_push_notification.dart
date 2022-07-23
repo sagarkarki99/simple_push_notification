@@ -79,7 +79,7 @@ class SimplePushNotification {
   /// `onRead` is called when a popup notification is tapped
   /// `onActivated` is called when push notification is activated successfully.
   Future<void> activate({
-    required void Function(String) onRead,
+    required void Function(Map<String, dynamic>) onRead,
     required void Function(String?) onActivated,
   }) async {
     await pushNotification.activate(
