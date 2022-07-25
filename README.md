@@ -8,6 +8,8 @@ A simple notification package for handling firebase notifications which supports
 
 ## Getting started
 
+This package uses firebase push notifications and to use this package, firebase app should be configured properly in your flutter app. Recommended way to setup firebase app is using `Flutterfire`. Follow this [doc](https://firebase.flutter.dev/docs/cli/)
+
 In the pubspec.yaml of your flutter project, add the following dependency:
 
 ```dart
@@ -20,8 +22,6 @@ import it:
 ```dart
     import 'package:simple_push_notification/simple_push_notification.dart';
 ```
-
-Inorder to use this package properly, firebase app should be configured properly in your flutter app. It will be easier using `Flutterfire`. Follow this [doc](https://firebase.flutter.dev/docs/cli/)
 
 ### Android
 
