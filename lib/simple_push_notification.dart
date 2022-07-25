@@ -1,24 +1,23 @@
 library simple_push_notification;
 
+import 'package:flutter/material.dart';
 import 'package:simple_push_notification/notification_manager/notification_manager.dart';
 import 'package:simple_push_notification/notification_manager/notification_manager_impl.dart';
 import 'package:simple_push_notification/others/notification_config.dart';
 import 'package:simple_push_notification/others/notification_navigation.dart';
 import 'package:simple_push_notification/others/notification_payload.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:simple_push_notification/push_notification/push_notification_service.dart';
 import 'package:simple_push_notification/push_notification/push_notification_service_impl.dart';
 
 class SimplePushNotification {
   late final InternalPushNotification pushNotification;
-  late final FirebaseApp firebaseApp;
+
   late final NotificationNavigation nav;
   late final NotificationManager _manager;
   static late SimplePushNotification _instance;
 
   SimplePushNotification._internal({
-    required this.firebaseApp,
     required this.nav,
     required NotificationPayload Function(Map<String, dynamic>)
         getNotificationPayload,
@@ -37,33 +36,32 @@ class SimplePushNotification {
   }
 
   /// Initialize push notification inorder to `activate` `deactivate` or `listen` to push notification service.
-  static SimplePushNotification initialize(
-    FirebaseApp firebaseApp,
+  ///
+  /// Inorder to handle notification navigation, either
+  ///  you need to implement [NotificationNavigation] interface and pass it here.
+  /// or,
+  ///
+  /// pass a navigator key of type [GlobalKey<NavigatorState>] that is passed in MaterialApp's navigatorKey.
+  ///
+  /// Create a class implementing [NotificationPayload] and return it from this callback.
+  /// This will navigate to routes specified in Payload
+  /// `Map<String,dynamic>` is a data coming from push notification.
 
-    /// Inorder to handle notification navigation, you need to implement [NotificationNavigation] interface and pass it here.
-    ///
-    /// ``` dart
-    /// class NavigationHandler implements NotificationNavigation{
-    /// @override
-    /// void navigateTo(NotificationPayload payload) {
-    ///   ///handle navigation to which ever router you have.
-    ///   payload.trigger(context); /// pass the context of `Navigator` in here.
-    ///  }
-    ///}
-    ///  ```
-    NotificationNavigation nav,
-
-    /// Create a class implementing [NotificationPayload] and return it from this callback.
-    /// This will navigate to routes specified in Payload
-    /// `Map<String,dynamic>` is a data coming from push notification.
-    NotificationPayload Function(Map<String, dynamic>) getNotificationPayload, {
-
-    /// Config includes the notification channel id, name and description, specifically for android.
+  /// Config includes the notification channel id, name and description, specifically for android.
+  static SimplePushNotification initialize({
+    NotificationNavigation? nav,
+    GlobalKey<NavigatorState> Function()? navigatorKey,
+    required NotificationPayload Function(Map<String, dynamic>)
+        getNotificationPayload,
     required NotificationConfig config,
   }) {
+    assert(nav != null || navigatorKey != null,
+        'Either `navigatorKey` or class implementing NotificationNavigation should be available ');
     _instance = SimplePushNotification._internal(
-      firebaseApp: firebaseApp,
-      nav: nav,
+      nav: nav ??
+          DefaultNotificationNavigation(
+            navigatorKey: navigatorKey!(),
+          ),
       getNotificationPayload: getNotificationPayload,
       config: config,
     );
@@ -91,8 +89,7 @@ class SimplePushNotification {
   /// This method deactivates and stops recieving push notifications.
   ///
   ///
-  /// `onRead` is called when a popup notification is tapped
-  /// `onActivated` is called when push notification is activated successfully.
+  /// `onDeactivated` is called when push notification is deactivated successfully.
   Future<void> deactivate({
     required void Function(String?) onDeactivated,
   }) async {
