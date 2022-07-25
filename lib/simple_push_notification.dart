@@ -10,6 +10,11 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:simple_push_notification/push_notification/push_notification_service.dart';
 import 'package:simple_push_notification/push_notification/push_notification_service_impl.dart';
 
+export 'notification_manager/notification_manager.dart';
+export 'others/notification_config.dart';
+export 'others/notification_navigation.dart';
+export 'others/notification_payload.dart';
+
 class SimplePushNotification {
   late final InternalPushNotification pushNotification;
 
