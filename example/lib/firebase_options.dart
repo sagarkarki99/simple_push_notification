@@ -2,7 +2,7 @@
 // ignore_for_file: lines_longer_than_80_chars, avoid_classes_with_only_static_members
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
-    show defaultTargetPlatform, kIsWeb, TargetPlatform;
+    show defaultTargetPlatform, TargetPlatform;
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -26,21 +26,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAVc7Y0Mc0KeMkajdxmZ2WBXaIyuxDF7uo',
-    appId: '1:489323135709:android:a5121b63c9abc88e155134',
-    messagingSenderId: '489323135709',
-    projectId: 'simple-notification-demo',
-    storageBucket: 'simple-notification-demo.appspot.com',
+    apiKey: 'YOUR_FIREBASE_API_KEY',
+    appId: 'YOUR_APP_ID',
+    messagingSenderId: 'YOUR_MESSAGING_ID',
+    projectId: 'YOUR_PROJECT_ID',
+    storageBucket: 'YOUR_STORAGE_BUCKET_NAME',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDDpuZ8kyca0icgdhaoNbA55Ri1whGI61I',
-    appId: '1:489323135709:ios:caea5e4465bc54fb155134',
-    messagingSenderId: '489323135709',
-    projectId: 'simple-notification-demo',
-    storageBucket: 'simple-notification-demo.appspot.com',
-    iosClientId:
-        '489323135709-sqfr7ed2t2cs48f0gpebs6ulm3jrf5ku.apps.googleusercontent.com',
-    iosBundleId: 'com.example.notificationDemo',
+    apiKey: 'YOUR_FIREBASE_API_KEY',
+    appId: 'YOUR_APP_ID',
+    messagingSenderId: 'YOUR_MESSAGING_ID',
+    projectId: 'YOUR_PROJECT_ID',
+    storageBucket: 'YOUR_STORAGE_BUCKET_NAME',
+    iosClientId: 'YOUR_IOS_CLIENT_ID',
+    iosBundleId: 'YOUR_BUNDLE_ID',
   );
 }
