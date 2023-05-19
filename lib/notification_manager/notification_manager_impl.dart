@@ -61,7 +61,7 @@ class NotificationManagerImpl implements NotificationManager {
 
     await notificationClient.initialize(
       initializationSettings,
-      onSelectNotification: (payload) async =>
+      onDidReceiveNotificationResponse: (payload) async =>
           _openNotification(_foregroundMessage),
     );
   }
@@ -69,8 +69,8 @@ class NotificationManagerImpl implements NotificationManager {
   AndroidInitializationSettings _getAndroidSettings() =>
       AndroidInitializationSettings(config.appIcon);
 
-  IOSInitializationSettings _getIosSettings() =>
-      const IOSInitializationSettings();
+  DarwinInitializationSettings _getIosSettings() =>
+      const DarwinInitializationSettings();
 
   void _requestIosPermission() {
     if (notificationClient.resolvePlatformSpecificImplementation<
@@ -120,7 +120,6 @@ class NotificationManagerImpl implements NotificationManager {
       AndroidNotificationDetails(
         config.notificationChannelId,
         config.notificationChannelName,
-        config.notificationChannelDescription,
         importance: Importance.high,
         priority: Priority.high,
       );
@@ -128,12 +127,11 @@ class NotificationManagerImpl implements NotificationManager {
   AndroidNotificationChannel get _androidChannel => AndroidNotificationChannel(
         config.notificationChannelId,
         config.notificationChannelName,
-        config.notificationChannelDescription,
         importance: Importance.high,
       );
 
-  IOSNotificationDetails _getIosNotificationDetails() =>
-      const IOSNotificationDetails();
+  DarwinNotificationDetails _getIosNotificationDetails() =>
+      const DarwinNotificationDetails();
 
   NotificationPayload _getNotificationPayload(Map<String, dynamic> message) {
     log(message.toString());
