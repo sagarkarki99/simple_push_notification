@@ -9,7 +9,7 @@ class InternalPushNotificationImpl implements InternalPushNotification {
   final String? previousToken;
 
   late Function(Map<String, dynamic>) _onReadNotification;
-  final List<Function(Map<String, dynamic>)> _listeners = [];
+  final List<PayloadCallback> _listeners = [];
 
   InternalPushNotificationImpl(
     this.notificationManager,
@@ -63,8 +63,13 @@ class InternalPushNotificationImpl implements InternalPushNotification {
   }
 
   @override
-  void listen(Function(Map<String, dynamic>) callback) {
-    _listeners.add(callback);
+  void addListener(PayloadCallback listener) {
+    _listeners.add(listener);
+  }
+
+  @override
+  void removeListener(PayloadCallback listener) {
+    _listeners.remove(listener);
   }
 
   Future<void> _activateForiOS() async {
