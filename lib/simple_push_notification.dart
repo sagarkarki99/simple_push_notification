@@ -103,9 +103,14 @@ class SimplePushNotification {
     );
   }
 
-  /// This methods listens to push notifications.
-  /// When any notifications arrives, `notify` callback is called.
-  void listen(Function(Map<String, dynamic>) notify) {
-    pushNotification.listen(notify);
+  /// This method adds a listener to listen to push notifications.
+  /// When any notification arrives, `listener` callback is called.
+  void addListener(PayloadCallback listener) {
+    pushNotification.addListener(listener);
+  }
+
+  /// This method removes the previously added listener.
+  void removeListener(PayloadCallback listener) {
+    pushNotification.removeListener(listener);
   }
 }
