@@ -36,7 +36,7 @@ class NotificationManagerImpl implements NotificationManager {
       Function(Map<String, dynamic> payload) onReadNotification) async {
     _onNotificationClick = onReadNotification;
     _foregroundMessage = message;
-    await _displayNotification(title, body, message);
+    if (Platform.isAndroid) await _displayNotification(title, body, message);
   }
 
   @override
