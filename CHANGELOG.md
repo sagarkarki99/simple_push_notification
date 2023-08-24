@@ -6,7 +6,7 @@ Initial release
 
 Update `Firebase` and `flutter_local_notifications` packages to latest version
 
-## 0.4.2
+## 0.4.3
 
 BREAKING CHANGES
 
