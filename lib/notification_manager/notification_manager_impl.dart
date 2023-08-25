@@ -36,7 +36,7 @@ class NotificationManagerImpl implements NotificationManager {
       Function(Map<String, dynamic> payload) onReadNotification) async {
     _onNotificationClick = onReadNotification;
     _foregroundMessage = message;
-    if (Platform.isAndroid) await _displayNotification(title, body, message);
+    await _displayNotification(title, body, message);
   }
 
   @override
@@ -120,14 +120,15 @@ class NotificationManagerImpl implements NotificationManager {
       AndroidNotificationDetails(
         config.notificationChannelId,
         config.notificationChannelName,
-        importance: Importance.high,
-        priority: Priority.high,
+        importance: Importance.max,
+        priority: Priority.max,
       );
 
   AndroidNotificationChannel get _androidChannel => AndroidNotificationChannel(
         config.notificationChannelId,
         config.notificationChannelName,
-        importance: Importance.high,
+        importance: Importance.max,
+        playSound: true,
       );
 
   DarwinNotificationDetails _getIosNotificationDetails() =>

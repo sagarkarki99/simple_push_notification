@@ -15,6 +15,7 @@ class InternalPushNotificationImpl implements InternalPushNotification {
     this.notificationManager,
     this.previousToken,
   );
+
   @override
   Future<void> activate({
     required void Function(Map<String, dynamic>) onRead,
@@ -37,16 +38,21 @@ class InternalPushNotificationImpl implements InternalPushNotification {
     }
 
     //while app is in foreground
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      final data = _getSendableData(message);
-      _notifyListeners(data);
-      notificationManager.displayPopup(
-        message.notification?.title ?? '',
-        message.notification?.body ?? '',
-        data,
-        (Map<String, dynamic> data) => markNotificationAsRead(data),
-      );
-    });
+    FirebaseMessaging.onMessage.listen(
+      (RemoteMessage message) {
+        final data = _getSendableData(message);
+        _notifyListeners(data);
+        if (message.notification != null &&
+            message.notification?.android != null) {
+          notificationManager.displayPopup(
+            message.notification?.title ?? '',
+            message.notification?.body ?? '',
+            data,
+            (Map<String, dynamic> data) => markNotificationAsRead(data),
+          );
+        }
+      },
+    );
 
     //while app is in background state
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
