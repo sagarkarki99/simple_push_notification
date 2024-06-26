@@ -13,4 +13,10 @@ BREAKING CHANGES
 - update `listen` method to `addListeners`
 - add `removeListeners` method to remove listening to notifications
 
+## 0.4.3
+
 fix: prevent two notification popup in IOS
+
+## 0.4.5
+
+chore: update `flutter_local_notifications` version to `14.0.0`

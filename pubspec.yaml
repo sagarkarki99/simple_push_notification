@@ -1,6 +1,6 @@
 name: simple_push_notification
 description: An extended package for handling firebase push notification service and notification navigation in a simple way.
-version: 0.4.4
+version: 0.4.5
 homepage: https://github.com/sagarkarki99/simple_push_notification
 issue_tracker: https://github.com/sagarkarki99/simple_push_notification/issues
 platforms:
@@ -8,7 +8,7 @@ platforms:
   ios:
 
 environment:
-  sdk: ">=2.16.2 <3.0.0"
+  sdk: ">=2.16.2 <4.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
